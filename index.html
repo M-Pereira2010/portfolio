@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miguel Pereira Nogueira — Portfólio</title>
+<meta name="description" content="Portfólio pessoal de Miguel Pereira Nogueira, estudante de Técnico em Informática.">
+
+<!-- Fontes do Google Fonts: Playfair Display (títulos) + Source Sans 3 (texto) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* =========================================================
+     VARIÁVEIS DE COR — paleta azul marinho, amarelo e preto
+     (o texto usa um tom claro neutro para garantir contraste
+     de leitura sobre o fundo escuro)
+     ========================================================= */
+  :root {
+    --cor-fundo: #060B18;
+    --cor-texto: #F2F0E8;
+    --cor-primaria: #16294F;
+    --cor-secundaria: #1F3868;
+    --cor-destaque: #F5C518;
+
+    --fonte-titulo: 'Fredoka', 'Nunito', sans-serif;
+    --fonte-texto: 'Nunito', -apple-system, sans-serif;
+
+    --duracao-anim: 0.5s;
+  }
+
+  /* Respeita quem pediu para reduzir movimento no sistema */
+  @media (prefers-reduced-motion: reduce) {
+    :root { --duracao-anim: 0.001s; }
+    * { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: var(--fonte-texto);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    body { cursor: none; }
+    a, button { cursor: none; }
+  }
+
+  h1, h2, h3 { font-family: var(--fonte-titulo); font-weight: 600; line-height: 1.15; }
+
+  section { max-width: 880px; margin: 0 auto; padding: 100px 24px; }
+
+  a { color: var(--cor-destaque); }
+
+  /* Fundo de estrelas do restante da página, atrás de tudo, fixo ao rolar */
+  .estrelas-fundo-global {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Planetas: parados no fundo, com giro bem lento e sutil */
+  .planeta {
+    position: absolute;
+    opacity: 0.9;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35));
+  }
+  .planeta-1 { width: 110px; top: 10%; right: 8%; animation: girar-planeta 60s linear infinite; }
+  .planeta-2 { width: 60px; bottom: 16%; left: 6%; animation: girar-planeta 46s linear infinite reverse; }
+  .planeta-3 { width: 44px; top: 46%; left: 50%; animation: girar-planeta 38s linear infinite; }
+
+  @keyframes girar-planeta {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 640px) {
+    .planeta-1 { width: 80px; }
+    .planeta-3 { display: none; }
+  }
+
+  /* =========================================================
+     CURSOR PERSONALIZADO — um pequeno ponto que acompanha o mouse
+     ========================================================= */
+  #cursor-custom {
+    position: fixed;
+    top: 0; left: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--cor-destaque);
+    background: radial-gradient(circle at center, var(--cor-texto) 0 3px, transparent 3px);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, opacity 0.2s;
+    opacity: 0;
+  }
+  #cursor-custom.ativo { opacity: 1; }
+  #cursor-custom.grande { width: 40px; height: 40px; }
+
+  /* =========================================================
+     NAVEGAÇÃO LATERAL — bolinhas indicando a seção atual
+     ========================================================= */
+  #nav-bolinhas {
+    position: fixed;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 500;
+  }
+  #nav-bolinhas button {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid var(--cor-secundaria);
+    padding: 0;
+    transition: background var(--duracao-anim), transform var(--duracao-anim);
+  }
+  #nav-bolinhas button.ativa {
+    background: var(--cor-destaque);
+    border-color: var(--cor-destaque);
+    transform: scale(1.3);
+  }
+  #nav-bolinhas button:focus-visible {
+    outline: 2px solid var(--cor-destaque);
+    outline-offset: 3px;
+  }
+  @media (max-width: 640px) {
+    #nav-bolinhas { right: 10px; gap: 10px; }
+  }
+
+  /* Seta para avançar de seção (aba) em aba */
+  .seta-proxima {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid var(--cor-secundaria);
+    color: var(--cor-texto);
+    font-size: 1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 6px;
+    transition: background var(--duracao-anim), color var(--duracao-anim), transform var(--duracao-anim);
+  }
+  .seta-proxima:hover {
+    background: var(--cor-destaque);
+    border-color: var(--cor-destaque);
+    color: var(--cor-fundo);
+    transform: translateY(2px);
+  }
+
+  /* =========================================================
+     HERO — fundo espacial animado (estrelas, asteroides e nave
+     com ET) atrás da foto e do texto, que continuam iguais
+     ========================================================= */
+  #hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 60px;
+    background: var(--cor-fundo);
+  }
+
+  .hero-conteudo {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 56px;
+    text-align: left;
+  }
+
+  .palco-avatar {
+    position: relative;
+    flex-shrink: 0;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    padding: 10px;
+    border: 1.5px solid var(--cor-secundaria);
+  }
+
+  .avatar {
+    display: block;
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--cor-secundaria);
+  }
+
+  #hero h1 {
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    letter-spacing: -0.01em;
+  }
+
+  #hero .frase {
+    margin-top: 14px;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--cor-destaque);
+    max-width: 420px;
+  }
+
+  #hero .local {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: var(--cor-texto);
+    opacity: 0.7;
+  }
+
+  @media (max-width: 640px) {
+    .hero-conteudo { flex-direction: column; text-align: center; gap: 32px; }
+    .palco-avatar { width: 190px; height: 190px; }
+  }
+
+  /* ---- Camada do fundo espacial: fica atrás do conteúdo do hero ---- */
+  .hero-espaco {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Estrelas: pontinhos quadrados (pixel) espalhados, com brilho piscando */
+  .estrela {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--cor-texto);
+    animation: piscar-estrela 2.6s ease-in-out infinite alternate;
+  }
+  @keyframes piscar-estrela {
+    from { opacity: 0.15; }
+    to { opacity: 1; }
+  }
+
+  /* Asteroides: blocos de pixel (box-shadow) cruzando a tela na diagonal */
+  .asteroide {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: #8a8a8a;
+    box-shadow:
+      4px 0 0 0 #8a8a8a,
+      -4px 4px 0 0 #6a6a6a,
+      0 4px 0 0 #8a8a8a,
+      4px 4px 0 0 #8a8a8a,
+      8px 4px 0 0 #8a8a8a,
+      -8px 8px 0 0 #8a8a8a,
+      -4px 8px 0 0 #5a5a5a,
+      0 8px 0 0 #8a8a8a,
+      4px 8px 0 0 #6a6a6a,
+      8px 8px 0 0 #8a8a8a,
+      12px 8px 0 0 #8a8a8a,
+      -4px 12px 0 0 #8a8a8a,
+      0 12px 0 0 #8a8a8a,
+      4px 12px 0 0 #5a5a5a,
+      8px 12px 0 0 #8a8a8a,
+      0 16px 0 0 #8a8a8a,
+      4px 16px 0 0 #8a8a8a;
+  }
+  .asteroide-1 { top: 18%; transform: scale(1.6); animation: cruzar-1 16s linear infinite; }
+  .asteroide-2 { top: 55%; transform: scale(1); animation: cruzar-2 12s linear infinite -4s; }
+  .asteroide-3 { top: 75%; transform: scale(2); animation: cruzar-3 20s linear infinite -9s; }
+
+  @keyframes cruzar-1 {
+    from { transform: translate(-10vw, 0) scale(1.6); }
+    to { transform: translate(110vw, 12vh) scale(1.6); }
+  }
+  @keyframes cruzar-2 {
+    from { transform: translate(-10vw, 0) scale(1); }
+    to { transform: translate(110vw, -18vh) scale(1); }
+  }
+  @keyframes cruzar-3 {
+    from { transform: translate(-10vw, 0) scale(2); }
+    to { transform: translate(110vw, 10vh) scale(2); }
+  }
+
+  /* Nave com o ET: voa devagar de um lado a outro do hero */
+  .ufo-orbita {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    animation: voar-nave 22s linear infinite;
+  }
+  @keyframes voar-nave {
+    from { transform: translateX(-20vw); }
+    to { transform: translateX(120vw); }
+  }
+  .ufo-flutuar {
+    position: relative;
+    animation: flutuar-nave 2.4s ease-in-out infinite alternate;
+  }
+  @keyframes flutuar-nave {
+    from { transform: translateY(-6px); }
+    to { transform: translateY(6px); }
+  }
+  .nave-svg {
+    width: 96px;
+    height: auto;
+    shape-rendering: crispEdges;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+  }
+
+  /* Balãozinho de fala "Oi!" — aparece quando a nave passa pelo meio da tela */
+  .balao-fala {
+    position: absolute;
+    top: -18px;
+    right: -30px;
+    background: var(--cor-destaque);
+    color: var(--cor-fundo);
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 3px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    animation: falar-oi 22s linear infinite;
+  }
+  @keyframes falar-oi {
+    0%, 32% { opacity: 0; }
+    40%, 55% { opacity: 1; }
+    63%, 100% { opacity: 0; }
+  }
+
+  /* =========================================================
+     DIVISÓRIA FINA entre seções — de ponta a ponta da tela
+     ========================================================= */
+  .divisoria {
+    width: 100%;
+    margin: 0;
+    border: none;
+    border-top: 1px solid var(--cor-secundaria);
+  }
+
+  /* =========================================================
+     BOTÕES — formato pílula
+     ========================================================= */
+  .botao {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 999px;
+    background: var(--cor-destaque);
+    color: var(--cor-fundo);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    font-family: var(--fonte-texto);
+    transition: transform var(--duracao-anim), box-shadow var(--duracao-anim);
+  }
+  .botao:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(245,197,24,0.3); }
+  .botao.contorno {
+    background: transparent;
+    color: var(--cor-texto);
+    border: 1.5px solid var(--cor-secundaria);
+  }
+
+  /* =========================================================
+     ANIMAÇÃO DE REVELAÇÃO AO ROLAR — elementos entram em sequência
+     ========================================================= */
+  .revelar {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--duracao-anim) ease, transform var(--duracao-anim) ease;
+  }
+  .revelar.visivel {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* =========================================================
+     SEÇÃO SOBRE
+     ========================================================= */
+  #sobre h2 { font-size: 2rem; margin-bottom: 24px; }
+  #sobre p { max-width: 65ch; margin-bottom: 16px; font-size: 1.05rem; }
+
+  /* =========================================================
+     SEÇÃO ENTREGAS — carrossel horizontal (arrastar)
+     ========================================================= */
+  #entregas h2 { font-size: 2rem; margin-bottom: 8px; }
+  #entregas .subtitulo { color: var(--cor-destaque); margin-bottom: 36px; opacity: 0.9; }
+
+  .carrossel {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding: 12px 4px 28px 4px;
+    scroll-snap-type: x proximity;
+    cursor: grab;
+    -webkit-overflow-scrolling: touch;
+  }
+  .carrossel.arrastando { cursor: grabbing; }
+  .carrossel::-webkit-scrollbar { height: 8px; }
+  .carrossel::-webkit-scrollbar-thumb { background: var(--cor-secundaria); border-radius: 999px; }
+
+  /* Setas de navegação do carrossel */
+  .controles-carrossel {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .seta-carrossel {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid var(--cor-secundaria);
+    color: var(--cor-texto);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--duracao-anim), border-color var(--duracao-anim);
+  }
+  .seta-carrossel:hover {
+    background: var(--cor-destaque);
+    border-color: var(--cor-destaque);
+    color: var(--cor-fundo);
+  }
+
+  /* Card grande e arredondado, com borda colorida girando no hover */
+  .card {
+    position: relative;
+    flex: 0 0 320px;
+    height: 340px;
+    scroll-snap-align: start;
+    background: var(--cor-secundaria);
+    border-radius: 28px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: visible;
+    border: 2px solid transparent;
+  }
+
+  /* Borda colorida que gira ao redor do card no hover */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 30px;
+    padding: 2px;
+    background: conic-gradient(from 0deg, var(--cor-destaque), var(--cor-primaria), var(--cor-destaque));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    animation: girar-borda 3s linear infinite paused;
+  }
+  .card:hover::before { opacity: 1; animation-play-state: running; }
+  @keyframes girar-borda { to { transform: rotate(360deg); } }
+
+  .card .numero {
+    font-family: var(--fonte-titulo);
+    font-size: 0.9rem;
+    color: var(--cor-destaque);
+    opacity: 0.9;
+  }
+  .card h3 {
+    font-size: 1.55rem;
+    color: var(--cor-texto);
+    margin: 6px 0 8px 0;
+  }
+  .card .data {
+    font-size: 0.85rem;
+    color: var(--cor-texto);
+    opacity: 0.65;
+    margin-bottom: 12px;
+  }
+  .card .aprendido {
+    font-size: 0.95rem;
+    color: var(--cor-texto);
+    opacity: 0.9;
+    flex-grow: 1;
+  }
+  .card .rodape-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .card .selo {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--cor-destaque);
+    color: var(--cor-fundo);
+  }
+  .card .link-card {
+    font-size: 0.82rem;
+    color: var(--cor-destaque);
+    text-decoration: underline;
+  }
+
+  /* Cards "Em breve": apagados e sem link clicável */
+  .card.em-breve {
+    opacity: 0.55;
+    filter: grayscale(35%);
+  }
+  .card.em-breve .link-card { pointer-events: none; text-decoration: none; opacity: 0.6; }
+
+  .dica-arraste {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--cor-texto);
+    opacity: 0.6;
+    margin-top: -12px;
+  }
+
+  /* =========================================================
+     SEÇÃO MANIFESTO — recolhido com botão
+     ========================================================= */
+  #manifesto h2 { font-size: 2rem; margin-bottom: 20px; }
+  #manifesto .caixa-manifesto {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease;
+  }
+  #manifesto .caixa-manifesto.aberto { max-height: 2000px; }
+  #manifesto .texto-manifesto {
+    padding-top: 16px;
+    max-width: 65ch;
+  }
+  #manifesto .texto-manifesto p {
+    margin-bottom: 16px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+  #manifesto .texto-manifesto p:last-child {
+    margin-bottom: 0;
+  }
+  #manifesto .botao-toggle { margin-top: 4px; }
+
+  /* =========================================================
+     RODAPÉ
+     ========================================================= */
+  footer {
+    padding: 70px 24px 50px 24px;
+    text-align: center;
+  }
+  footer h2 { font-size: 1.6rem; margin-bottom: 10px; }
+  footer .contatos {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 22px;
+  }
+  footer .assinatura {
+    margin-top: 40px;
+    font-size: 0.8rem;
+    opacity: 0.55;
+  }
+
+  /* ---- ET no rodapé, chamando para mandar mensagem ---- */
+  .et-contato {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .et-contato .et-flutuar {
+    animation: flutuar-nave 2.4s ease-in-out infinite alternate;
+  }
+  .et-svg {
+    width: 56px;
+    height: auto;
+    shape-rendering: crispEdges;
+  }
+  .balao-fala-contato {
+    position: relative;
+    background: var(--cor-destaque);
+    color: var(--cor-fundo);
+    font-family: var(--fonte-titulo);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 6px 16px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+  .balao-fala-contato::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0 6px;
+    border-style: solid;
+    border-color: var(--cor-destaque) transparent transparent transparent;
+  }
+
+  /* Foco visível para navegação por teclado, em todo o site */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--cor-destaque);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 480px) {
+    section { padding: 70px 18px; }
+    .card { flex-basis: 270px; height: 300px; padding: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Fundo de estrelas fixo, atrás de toda a página (só estrelas e planetas, sem asteroides/nave) -->
+<div id="camada-estrelas-global" class="estrelas-fundo-global" aria-hidden="true">
+  <svg class="planeta planeta-1" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+    <circle cx="14" cy="14" r="8" style="fill:#B98A4B"/>
+    <rect x="9" y="10" width="3" height="3" style="fill:#8a6633"/>
+    <rect x="17" y="17" width="2" height="2" style="fill:#8a6633"/>
+    <ellipse cx="14" cy="14" rx="13" ry="3" fill="none" style="stroke:var(--cor-destaque)" stroke-width="2" transform="rotate(-20 14 14)"/>
+  </svg>
+  <svg class="planeta planeta-2" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+    <circle cx="10" cy="10" r="7" style="fill:#3a5a8a"/>
+    <rect x="6" y="6" width="3" height="3" style="fill:#26406b"/>
+    <rect x="12" y="11" width="2" height="2" style="fill:#26406b"/>
+  </svg>
+  <svg class="planeta planeta-3" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+    <circle cx="8" cy="8" r="5.5" style="fill:#5c3a5e"/>
+    <rect x="5" y="4" width="2" height="2" style="fill:#3f2740"/>
+    <rect x="9" y="9" width="2" height="2" style="fill:#3f2740"/>
+  </svg>
+</div>
+
+<!-- Elemento do cursor personalizado, controlado via JS -->
+<div id="cursor-custom" aria-hidden="true"></div>
+
+<!-- Navegação lateral por bolinhas -->
+<nav id="nav-bolinhas" aria-label="Navegação por seções">
+  <button data-alvo="hero" aria-label="Ir para o topo" class="ativa"></button>
+  <button data-alvo="sobre" aria-label="Ir para Sobre mim"></button>
+  <button data-alvo="entregas" aria-label="Ir para Minhas entregas"></button>
+  <button data-alvo="manifesto" aria-label="Ir para Manifesto"></button>
+  <button data-alvo="contato" aria-label="Ir para Contato"></button>
+  <button id="seta-proxima-secao" class="seta-proxima" aria-label="Ir para a próxima seção">↓</button>
+</nav>
+
+<header id="hero">
+  <div class="hero-espaco" aria-hidden="true">
+    <div id="camada-estrelas"></div>
+
+    <div class="asteroide asteroide-1"></div>
+    <div class="asteroide asteroide-2"></div>
+    <div class="asteroide asteroide-3"></div>
+
+    <div class="ufo-orbita">
+      <div class="ufo-flutuar">
+        <!-- Nave pixelada com o ET espiando pela cúpula -->
+        <svg class="nave-svg" viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg">
+          <rect x="16" y="4" width="8" height="4" style="fill:var(--cor-secundaria)"/>
+          <rect x="8" y="10" width="24" height="4" style="fill:var(--cor-secundaria)"/>
+          <rect x="4" y="14" width="32" height="4" style="fill:var(--cor-primaria)"/>
+          <rect x="6" y="18" width="3" height="3" style="fill:var(--cor-destaque)"/>
+          <rect x="13" y="18" width="3" height="3" style="fill:var(--cor-destaque)"/>
+          <rect x="20" y="18" width="3" height="3" style="fill:var(--cor-destaque)"/>
+          <rect x="27" y="18" width="3" height="3" style="fill:var(--cor-destaque)"/>
+          <rect x="17" y="1" width="6" height="4" style="fill:#3fae4f"/>
+          <rect x="18" y="2" width="1" height="1" style="fill:#0a0a0a"/>
+          <rect x="21" y="2" width="1" height="1" style="fill:#0a0a0a"/>
+        </svg>
+        <span class="balao-fala">Oi!</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-conteudo">
+    <div class="palco-avatar">
+      <!-- Trocar por uma foto real do Miguel -->
+      <img class="avatar" src="https://placehold.co/220x220/16294F/F2F0E8?text=MPN" alt="Foto de Miguel Pereira Nogueira">
+    </div>
+    <div class="hero-texto">
+      <h1>Miguel Pereira Nogueira</h1>
+      <p class="frase">"Nunca desista antes de tentar"</p>
+      <p class="local">16 anos · Varginha, MG · Técnico em Informática</p>
+    </div>
+  </div>
+</header>
+
+<hr class="divisoria">
+
+<section id="sobre">
+  <h2 class="revelar">Sobre mim</h2>
+  <p class="revelar">Sou Miguel, tenho 16 anos e moro em Varginha-MG. Sou alegre e comunicativo, gosto de conversar e sorrir. Sou decidido, quero vencer e lutar pelos meus sonhos.</p>
+  <p class="revelar">Nas horas vagas, gosto de conversar e tocar instrumentos — um lado que poucas pessoas conhecem. O plano lá na frente é engenharia, mirando ITA ou IME.</p>
+</section>
+
+<hr class="divisoria">
+
+<section id="entregas">
+  <h2 class="revelar">Minhas entregas</h2>
+  <p class="subtitulo revelar">Cinco projetos desenvolvidos ao longo do curso técnico.</p>
+
+  <div class="carrossel" id="carrossel" tabindex="0" aria-label="Carrossel de entregas, arraste para o lado">
+
+    <article class="card em-breve revelar">
+      <span class="numero">Entrega 01</span>
+      <h3>Capa do Meu Álbum</h3>
+      <span class="data">[PREENCHER data]</span>
+      <p class="aprendido">[PREENCHER — o que eu aprendi com essa entrega]</p>
+      <div class="rodape-card">
+        <a class="link-card" href="#" aria-disabled="true">Ver pasta</a>
+        <span class="selo">[PREENCHER status]</span>
+      </div>
+    </article>
+
+    <article class="card em-breve revelar">
+      <span class="numero">Entrega 02</span>
+      <h3>Dashboard Quem Sou Eu</h3>
+      <span class="data">[PREENCHER data]</span>
+      <p class="aprendido">[PREENCHER — o que eu aprendi com essa entrega]</p>
+      <div class="rodape-card">
+        <a class="link-card" href="#" aria-disabled="true">Ver pasta</a>
+        <span class="selo">[PREENCHER status]</span>
+      </div>
+    </article>
+
+    <article class="card em-breve revelar">
+      <span class="numero">Entrega 03</span>
+      <h3>Árvore das Profissões 2.0</h3>
+      <span class="data">[PREENCHER data]</span>
+      <p class="aprendido">[PREENCHER — o que eu aprendi com essa entrega]</p>
+      <div class="rodape-card">
+        <a class="link-card" href="#" aria-disabled="true">Ver pasta</a>
+        <span class="selo">[PREENCHER status]</span>
+      </div>
+    </article>
+
+    <article class="card em-breve revelar">
+      <span class="numero">Entrega 04</span>
+      <h3>Âncoras de Carreira</h3>
+      <span class="data">[PREENCHER data]</span>
+      <p class="aprendido">[PREENCHER — o que eu aprendi com essa entrega]</p>
+      <div class="rodape-card">
+        <a class="link-card" href="#" aria-disabled="true">Ver pasta</a>
+        <span class="selo">[PREENCHER status]</span>
+      </div>
+    </article>
+
+    <article class="card em-breve revelar">
+      <span class="numero">Entrega 05</span>
+      <h3>Manifesto</h3>
+      <span class="data">[PREENCHER data]</span>
+      <p class="aprendido">[PREENCHER — o que eu aprendi com essa entrega]</p>
+      <div class="rodape-card">
+        <a class="link-card" href="#" aria-disabled="true">Ver pasta</a>
+        <span class="selo">[PREENCHER status]</span>
+      </div>
+    </article>
+
+  </div>
+  <div class="controles-carrossel">
+    <button class="seta-carrossel" id="seta-esquerda" aria-label="Ver entrega anterior">←</button>
+    <button class="seta-carrossel" id="seta-direita" aria-label="Ver próxima entrega">→</button>
+  </div>
+  <p class="dica-arraste">Arraste ou use as setas para navegar entre os projetos.</p>
+</section>
+
+<hr class="divisoria">
+
+<section id="manifesto">
+  <h2 class="revelar">Manifesto</h2>
+  <div class="revelar">
+    <button class="botao contorno botao-toggle" id="botao-manifesto" aria-expanded="false" aria-controls="caixa-manifesto">Ler manifesto completo</button>
+    <div class="caixa-manifesto" id="caixa-manifesto">
+      <div class="texto-manifesto">
+        <p>Não me contento com a superfície das coisas. Em uma época em que quase tudo é consumido de forma rápida e automatizada, escolhi o caminho de entender o que acontece por baixo do capô. Aprender lógica de algoritmos, compreender estruturas de dados, programar em C++ e mergulhar nos conceitos da física clássica não é apenas sobre cumprir a grade do meu curso técnico em Varginha. É sobre construir uma mentalidade analítica capaz de decompor problemas complexos em partes fundamentais e resolvê-los com rigor técnico.</p>
+        <p>A meta de ingressar em instituições de excelência como o ITA ou o IME exige muito mais do que entusiasmo passageiro. Exige disciplina diária, constância e a decisão consciente de trocar a facilidade do resultado imediato pelo esforço de longo prazo. A rotina dividida entre as aulas de informática e o estudo aprofundado das matérias de exatas não deixa espaço para improvisos. Cada problema de física resolvido, cada conceito matemático assimilado e cada algoritmo otimizado representam um tijolo na construção de uma base acadêmica sólida.</p>
+        <p>As entregas e projetos reunidos neste espaço não são meros cumprimentos de tarefas escolares; são registros da minha evolução. Eles documentam a transição do aprendizado passivo para a execução prática e autoral. Meu compromisso é manter a curiosidade investigativa viva, o método de estudos afiado e a ética profissional inegociável em cada linha de código, projeto ou cálculo que eu desenvolver.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divisoria">
+
+<footer id="contato">
+  <div class="et-contato revelar" aria-hidden="true">
+    <span class="balao-fala-contato">Me mande uma mensagem!</span>
+    <div class="et-flutuar">
+      <svg class="et-svg" viewBox="0 0 20 16" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="2" width="8" height="6" style="fill:#3fae4f"/>
+        <rect x="7" y="4" width="2" height="2" style="fill:#0a0a0a"/>
+        <rect x="11" y="4" width="2" height="2" style="fill:#0a0a0a"/>
+        <rect x="4" y="8" width="12" height="4" style="fill:#2f8f3f"/>
+        <rect x="2" y="9" width="2" height="2" style="fill:#2f8f3f"/>
+        <rect x="16" y="7" width="2" height="2" style="fill:#2f8f3f"/>
+      </svg>
+    </div>
+  </div>
+  <h2 class="revelar">Contato</h2>
+  <p class="revelar">miguelpereiranogueira@gmail.com · Instagram @Miguel_09pn</p>
+  <div class="contatos revelar">
+    <a class="botao" href="https://github.com/M-Pereira2010" target="_blank" rel="noopener">Acessar GitHub</a>
+    <a class="botao contorno" href="mailto:miguelpereiranogueira@gmail.com">Enviar e-mail</a>
+  </div>
+  <p class="assinatura">Feito por Miguel Pereira Nogueira.</p>
+</footer>
+
+<script>
+  // ===========================================================
+  // FUNDO DE ESTRELAS: gera pontinhos pixelados piscando
+  // ===========================================================
+  const reduzMovimentoEstrelas = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function gerarEstrelas(container, quantidade) {
+    for (let i = 0; i < quantidade; i++) {
+      const estrela = document.createElement('span');
+      estrela.className = 'estrela';
+      estrela.style.top = Math.random() * 100 + '%';
+      estrela.style.left = Math.random() * 100 + '%';
+      if (!reduzMovimentoEstrelas) {
+        estrela.style.animationDelay = (Math.random() * 2.6) + 's';
+      }
+      container.appendChild(estrela);
+    }
+  }
+
+  gerarEstrelas(document.getElementById('camada-estrelas'), 55);
+  gerarEstrelas(document.getElementById('camada-estrelas-global'), 70);
+
+  // ===========================================================
+  // CURSOR PERSONALIZADO: um pequeno ponto que segue o mouse
+  // ===========================================================
+  const cursor = document.getElementById('cursor-custom');
+  const temMouseFino = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (temMouseFino) {
+    window.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      cursor.classList.add('ativo');
+    });
+    document.querySelectorAll('a, button').forEach((el) => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('grande'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('grande'));
+    });
+  }
+
+  // ===========================================================
+  // REVELAÇÃO AO ROLAR: elementos aparecem em sequência
+  // ===========================================================
+  const reduzMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const elementosRevelar = document.querySelectorAll('.revelar');
+
+  if (reduzMovimento) {
+    elementosRevelar.forEach((el) => el.classList.add('visivel'));
+  } else {
+    const observador = new IntersectionObserver((entradas) => {
+      entradas.forEach((entrada) => {
+        if (entrada.isIntersecting) {
+          // atraso crescente para os cards aparecerem um de cada vez
+          const atraso = Array.from(entrada.target.parentElement.children).indexOf(entrada.target) * 90;
+          setTimeout(() => entrada.target.classList.add('visivel'), atraso);
+          observador.unobserve(entrada.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    elementosRevelar.forEach((el) => observador.observe(el));
+  }
+
+  // ===========================================================
+  // NAVEGAÇÃO LATERAL: destaca a bolinha da seção visível
+  // ===========================================================
+  const secoes = ['hero', 'sobre', 'entregas', 'manifesto', 'contato'].map((id) => document.getElementById(id));
+  const botoesNav = document.querySelectorAll('#nav-bolinhas button[data-alvo]');
+  let secaoAtual = 0;
+
+  botoesNav.forEach((botao) => {
+    botao.addEventListener('click', () => {
+      document.getElementById(botao.dataset.alvo).scrollIntoView({ behavior: reduzMovimento ? 'auto' : 'smooth' });
+    });
+  });
+
+  const observadorNav = new IntersectionObserver((entradas) => {
+    entradas.forEach((entrada) => {
+      if (entrada.isIntersecting) {
+        botoesNav.forEach((b) => b.classList.remove('ativa'));
+        const alvo = document.querySelector(`#nav-bolinhas button[data-alvo="${entrada.target.id}"]`);
+        if (alvo) alvo.classList.add('ativa');
+        secaoAtual = secoes.indexOf(entrada.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  secoes.forEach((s) => observadorNav.observe(s));
+
+  // Seta: avança para a próxima seção (aba); do final, volta para o topo
+  document.getElementById('seta-proxima-secao').addEventListener('click', () => {
+    const proxima = (secaoAtual + 1) % secoes.length;
+    secoes[proxima].scrollIntoView({ behavior: reduzMovimento ? 'auto' : 'smooth' });
+  });
+
+  // ===========================================================
+  // CARROSSEL: arrastar com o mouse (touch já funciona nativamente)
+  // ===========================================================
+  const carrossel = document.getElementById('carrossel');
+  let arrastando = false, posInicial, scrollInicial;
+
+  carrossel.addEventListener('mousedown', (e) => {
+    arrastando = true;
+    carrossel.classList.add('arrastando');
+    posInicial = e.pageX - carrossel.offsetLeft;
+    scrollInicial = carrossel.scrollLeft;
+  });
+  window.addEventListener('mouseup', () => { arrastando = false; carrossel.classList.remove('arrastando'); });
+  carrossel.addEventListener('mouseleave', () => { arrastando = false; carrossel.classList.remove('arrastando'); });
+  carrossel.addEventListener('mousemove', (e) => {
+    if (!arrastando) return;
+    e.preventDefault();
+    const posAtual = e.pageX - carrossel.offsetLeft;
+    carrossel.scrollLeft = scrollInicial - (posAtual - posInicial);
+  });
+
+  // Setas: avançam ou voltam um card por clique
+  const larguraCard = 320 + 24; // largura do card + gap
+  document.getElementById('seta-esquerda').addEventListener('click', () => {
+    carrossel.scrollBy({ left: -larguraCard, behavior: reduzMovimento ? 'auto' : 'smooth' });
+  });
+  document.getElementById('seta-direita').addEventListener('click', () => {
+    carrossel.scrollBy({ left: larguraCard, behavior: reduzMovimento ? 'auto' : 'smooth' });
+  });
+
+  // ===========================================================
+  // MANIFESTO: abrir/fechar o texto completo
+  // ===========================================================
+  const botaoManifesto = document.getElementById('botao-manifesto');
+  const caixaManifesto = document.getElementById('caixa-manifesto');
+  botaoManifesto.addEventListener('click', () => {
+    const aberto = caixaManifesto.classList.toggle('aberto');
+    botaoManifesto.setAttribute('aria-expanded', aberto);
+    botaoManifesto.textContent = aberto ? 'Recolher manifesto' : 'Ler manifesto completo';
+  });
+</script>
+
+</body>
+</html>
